@@ -1,6 +1,6 @@
 @ECHO OFF
 
-set "CURRENT_VAR=%testes%"
+set "CURRENT_VAR=%PATH%"
 
 setlocal EnableDelayedExpansion
 
@@ -17,37 +17,40 @@ IF %ERRORLEVEL%==0 (
 	
 	rem verifica se o conteudo da variavel nova ja existe na atual
 	echo !CURRENT_VAR! | findstr /C"!FB_LOC!" >nul
-	
+
 	rem adiciona a informacao a variavel de ambiente se nao existir, se existir ele retorna erro
 	if !ERRORLEVEL!==0 (
-		echo Variavel ja definida "!CURRENT_VAR!"
+		echo Variavel ja definida
 		pause
 	) else (
-		setx testes "!CONCATENED_VAR!" 
+		setx PATH "!CONCATENED_VAR!" 
+		cls
 	)
 )ELSE (
 	echo Diretorio do Firebird incorreto
 	pause
+	cls
 )
 
 rem seta a nova variavel, a variavel atual e a concatenada
 set "NEW_VAR=C:\testes"
-rem set "CURRENT_VAR=%testes%"
-rem arrumar a concatenaÃ§Ã£o dessa variÃ¡vel, pois a expansÃ£o estÃ¡ fodendo com ela
 set NEW_CONCATENED_VAR=%CONCATENED_VAR%;%NEW_VAR%
-echo %NEW_CONCATENED_VAR% 
-pause
 
-rem verifica se o conteÃƒÂºdo da variavel nova jÃƒÂ¡ existe na atual
+rem verifica se o conteudo da variavel nova ja existe na atual
 echo %CURRENT_VAR% | findstr /C"%NEW_VAR%" >nul
 
-rem adiciona a informaÃƒÂ§ÃƒÂ£o a variavel de ambiente se nÃƒÂ£o existir, se existir ele retorna erro
+rem adiciona a informacao a variavel de ambiente se nao existir, se existir ele retorna erro
 if %ERRORLEVEL%==0 (
+	cls
 	echo Variavel ja definida
+	pause
 ) else (
-	setx testes "%NEW_CONCATENED_VAR%"
+	setx PATH "%NEW_CONCATENED_VAR%"
+	cls
+	echo Variavel adicionada
+	pause
+	cls
 )
-echo %CURRENT_VAR%
-
 endlocal
-pause
+exit /b
+

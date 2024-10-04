@@ -1,57 +1,69 @@
 @ECHO OFF
 
+set "CURRENT_VAR=%PATH%"
+
 setlocal EnableDelayedExpansion
-set "CURRENT_VAR=%testes%"
 
 rem seta a nova variavel, a variavel atual e a concatenada
-ECHO Insira a localização da pasta raiz do Firebird
+ECHO Insira a localizacao da pasta raiz do Firebird
 set /p "FB_LOC="
 
 cd %FB_LOC%
 
-rem Valida se a pasta está correta
+rem Valida se a pasta esta correta
 dir | findstr /I "instsvc" >nul
 IF %ERRORLEVEL%==0 (
-	set "CONCATENED_VAR=!CURRENT_VAR!;!FB_LOC!"
+	rem set "CONCATENED_VAR=!CURRENT_VAR!;!FB_LOC!"
 	
-	pause
-	
-	rem verifica se o conteúdo da variavel nova já existe na atual
+	rem verifica se o conteudo da variavel nova ja existe na atual
 	echo !CURRENT_VAR! | findstr /C"!FB_LOC!" >nul
-	
-	rem adiciona a informação a variavel de ambiente se não existir, se existir ele retorna erro
+
+	rem adiciona a informacao a variavel de ambiente se nao existir, se existir ele retorna erro
 	if !ERRORLEVEL!==0 (
-		echo Variavel ja definida "!CURRENT_VAR!"
+		echo Variavel ja definida
 		pause
-	) else (
-		setx testes "!CONCATENED_VAR!"
-		pause
+		exit /b
+	) else ( 
+		cls
 	)
 )ELSE (
-	echo FEIJOADA
+	echo Diretorio do Firebird incorreto
 	pause
+	cls
 )
-endlocal
 
-
-setlocal
 rem seta a nova variavel, a variavel atual e a concatenada
-set "NEW_VAR=C:\Users\G\Desktop\testing"
-set "CURRENT_VAR=%testes%"
-set "CONCATENED_VAR=%CURRENT_VAR%;%NEW_VAR%"
 
-rem verifica se o conteúdo da variavel nova já existe na atual
+cd /
+mkdir testes
+
+set "NEW_VAR=C:\testes"
+set NEW_CONCATENED_VAR=%CONCATENED_VAR%;%NEW_VAR%
+
+rem verifica se o conteudo da variavel nova ja existe na atual
 echo %CURRENT_VAR% | findstr /C"%NEW_VAR%" >nul
 
-rem adiciona a informação a variavel de ambiente se não existir, se existir ele retorna erro
+rem adiciona a informacao a variavel de ambiente se nao existir, se existir ele retorna erro
 if %ERRORLEVEL%==0 (
+	cls
 	echo Variavel ja definida
+	pause
+	exit /b
 ) else (
-	setx testes "%CONCATENED_VAR%"
+	cls
+	echo Variavel adicionada
+	pause
+	cls
 )
-echo %CURRENT_VAR%
-endlocal
 
+cd C:\Users\gabriel.pereira\Desktop\temp\Facilitador-Backup-Restore--corre-o-da-impossibilidade-de-adicionar-as-duas-var-de-ambiente
 
+set "CONCATENED_VAR=!CURRENT_VAR!;!FB_LOC!;!NEW_VAR!"
+setx /m PATH "%CONCATENED_VAR%"
 
+echo %CONCATENED_VAR% > var.txt
 pause
+
+endlocal
+exit /b
+
